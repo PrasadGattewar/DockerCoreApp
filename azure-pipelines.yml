@@ -49,6 +49,7 @@ stages:
       displayName: Deploy
       pool:
         vmImage: nodepool
+      environment: default
       strategy:
         runOnce:
           deploy:
