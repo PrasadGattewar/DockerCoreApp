@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: webappdeploytoaks 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webappdeploytoaks
+  template:
+    metadata:
+      labels:
+        app: webappdeploytoaks 
+    spec:
+      containers:
+        - name: webappdeploytoaks 
+          image: webappacr12.azurecr.io/webappdeploytoaks
+          ports:
+          - containerPort: 80
