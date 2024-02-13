@@ -2,8 +2,7 @@
 # Build and push an image to Azure Container Registry
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
-trigger:
-- master
+trigger: none
 
 resources:
 - repo: self
@@ -12,7 +11,7 @@ variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '71a65d34-9c2d-41b9-95d9-5e6125946844'
   imageRepository: 'csharpapp'
-  containerRegistry: 'dockerappcicd.azurecr.io'
+  containerRegistry: 'webappacr12.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
 
@@ -31,14 +30,14 @@ stages:
     - task: Docker@2
       displayName: 'Build Image'
       inputs:
-        containerRegistry: 'DockerApp_ServiceCon'
+        containerRegistry: 'AzureContainerRegi'
         repository: staggingRepo
         command: build
 
     - task: Docker@2
       displayName: 'Push Image'
       inputs:
-        containerRegistry: 'DockerApp_ServiceCon'
+        containerRegistry: 'AzureContainerRegi'
         repository: staggingRepo
         command: push
     - task: trivy@1
