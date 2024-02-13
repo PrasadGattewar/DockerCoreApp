@@ -25,7 +25,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: $(vmImageName)
+      vmImage: nodepool
     steps:
     - task: Docker@2
       displayName: Build and push an image to container registry
@@ -36,3 +36,37 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+
+    - upload: manifests
+      artifact: manifests
+
+- stage: Deploy
+  displayName: Deploy Stage
+  dependsOn: Build
+
+  jobs:
+    - deployment: Deploy
+      displayName: Deploy
+      pool:
+        vmImage: nodepool
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - task: KubernetesManifest@1
+                displayName: Create Image pull secret
+                inputs:
+                  action: 'createSecret'
+                  connectionType: 'kubernetesServiceConnection'
+                  kubernetesServiceConnection: 'AKSCluster'
+                  namespace: 'default'
+                  secretType: 'dockerRegistry'
+                  dockerRegistryEndpoint: 'webAppACR12'
+              - task: KubernetesManifest@1
+                displayName: Deploy to Kubernetes Cluster
+                inputs:
+                  action: 'deploy'
+                  manifests: |
+                    $(Pipeline.Workspace)/App-deployment-service.yml
+                  containers: |
+                    $(containerRegistry)/$(imageRepository):$(tag)
