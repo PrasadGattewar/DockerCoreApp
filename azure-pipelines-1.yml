@@ -52,7 +52,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'WebAppDeployToAKS.default'
+    #environment: 'WebAppDeployToAKS.default'
     strategy:
       runOnce:
         deploy:
