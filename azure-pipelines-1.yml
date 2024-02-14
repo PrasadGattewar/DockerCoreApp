@@ -68,9 +68,7 @@ stages:
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
-              manifests: |
-                $(Agent.BuildDirectory)/manifests/deployment.yml
-                $(Agent.BuildDirectory)/manifests/service.yml
+              manifests: '**/App-deployment-service.yml'
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |
