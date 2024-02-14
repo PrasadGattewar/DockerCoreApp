@@ -1,36 +1,31 @@
-apiVersion: apps/v1
+apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: web-app-deployment
-  labels:
-    app: web-app
+  name: webappdeploytoaks 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: web-app
+      app: webappdeploytoaks
   template:
     metadata:
       labels:
-        app: web-app
+        app: webappdeploytoaks 
     spec:
       containers:
-      - name: web-app
-        image: webappacr12.azurecr.io/webappdeploytoaks:267
-        ports:
-        - containerPort: 80
+        - name: webappdeploytoaks 
+          image: webappacr12.azurecr.io/webappdeploytoaks
+          ports:
+          - containerPort: 80
 # service type loadbalancer       
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-app-loadbalancer-service
-  labels:
-    app: web-app
+    name: webappdeploytoaks
 spec:
-  type: LoadBalancer
-  selector:
-    app: web-app
-  ports:
-      port: 80
-      targetPort: 80
+    type: LoadBalancer
+    ports:
+    - port: 80 
+    selector:
+        app: webappdeploytoaks
