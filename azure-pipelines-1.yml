@@ -69,8 +69,8 @@ stages:
             inputs:
               action: deploy
               manifests: |
-                **/manifests/deployment.yml
-                **/manifests/service.yml
+                $(System.DefaultWorkingDirectory)/manifests/deployment.yml
+                $(System.DefaultWorkingDirectory)/manifests/service.yml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |
