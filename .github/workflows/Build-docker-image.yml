@@ -24,7 +24,7 @@ jobs:
       uses: docker/build-push-action@v6.13.0
       with:
         run: 
-          docker build -t $DOCKER_USERNAME/mydockerapp:latest .
+          docker build -t ${{ vars.DOCKER_USERNAME }}/mydockerapp:latest .
 
     # Push  Image to Docker Hub
     - name: Push Image
