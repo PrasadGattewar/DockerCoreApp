@@ -1,17 +1,31 @@
-name: Build Docker Image
+name: Build and Push Docker Image
 
 on:
   push:
     branches: [ "master" ]
 
-env:
-  DOCKER_PATH: ./Dockerfile
-
 jobs:
-  build:
+  build-and-Push:
     runs-on: ubuntu-latest
+    
     steps:
+    # Checkout Repository
+    - name: Checkout Repository
     - uses: actions/checkout@v4
+
+    # Login to Docker Hub
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # Build Docker Image
     - name: Build the Docker image
       run: |
-        docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/mydockerapp:latest .
+
+    # Push Docker Image to Docker Hub
+    - name: Push Image
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/mydockerapp:latest
