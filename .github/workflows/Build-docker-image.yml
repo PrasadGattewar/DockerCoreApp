@@ -16,7 +16,7 @@ jobs:
     - name: Log in to Docker Hub
       uses: docker/login-action@v3.3.0
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
+        username: $DOCKER_USERNAME
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     # Build Docker Image
@@ -24,7 +24,7 @@ jobs:
       uses: docker/build-push-action@v6.13.0
       with:
         run: 
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/mydockerapp:latest .
+          docker build -t $DOCKER_USERNAME/mydockerapp:latest .
 
     # Push Docker Image to Docker Hub
     - name: Push Image
